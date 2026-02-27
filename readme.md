@@ -2,6 +2,8 @@
 
 A fully featured, client-side Sudoku Solver built with pure HTML, CSS, and Vanilla JavaScript. Wrapped in a sleek Cyberpunk aesthetic with Matrix digital rain, this app doesn't just solve Sudoku—it visualizes the logic, scans puzzles from images using Neural Networks (OCR), and provides a highly interactive user experience.
 
+🌐 **Live Demo:** [Click Here to Play](https://zhengheetong.github.io/Sudoku-App/)
+
 ![Cyberpunk Sudoku Solver Preview](https://via.placeholder.com/800x450.png?text=Add+Screenshot+Here) *(Replace with an actual screenshot or GIF of your app)*
 
 ## ✨ Features
@@ -35,7 +37,7 @@ Because this is a pure client-side web application with no build steps or backen
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/zhengheetong/cyberpunk-sudoku-solver.git](https://github.com/zhengheetong/cyberpunk-sudoku-solver.git)
+   git clone [https://github.com/zhengheetong/Sudoku-App.git](https://github.com/zhengheetong/Sudoku-App.git)
    ```
 2. Navigate to the project folder.
 3. Double-click on `index.html` to open it in your default web browser.
