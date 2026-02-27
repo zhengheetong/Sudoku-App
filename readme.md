@@ -56,6 +56,13 @@ Because this is a pure client-side web application with no build steps or backen
    * Click **Fast Solve** for an instant answer.
 4. **Reset**: Clears the board and starts fresh.
 
+## 🧬 Origins & Credits
+
+This project is a web-based evolution of my original **[C# WPF Sudoku Solver](https://github.com/zhengheetong/SudokuSolver)**. The core logic—including the possibility elimination algorithms (Naked Singles, Hidden Singles, Pairs) and the fallback backtracking estimation—was directly ported from the original C# architecture into Vanilla JavaScript.
+
+* **Engineering & Logic:** Tong Zheng Hee
+* **AI Co-Pilot:** Conversion from WPF/C# to a fully responsive, Cyberpunk-themed HTML/CSS/JS web application (including Tesseract.js and Cropper.js integration) was achieved with the assistance of **Google Gemini**.
+
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
