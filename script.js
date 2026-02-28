@@ -566,3 +566,6 @@ window.addEventListener('resize', () => {
     matrixCanvas.width = window.innerWidth;
     matrixCanvas.height = window.innerHeight;
 });
+
+// Prevent context menu (Save Image popup) during mobile cropping
+document.getElementById('cropOverlay').addEventListener('contextmenu', event => event.preventDefault());

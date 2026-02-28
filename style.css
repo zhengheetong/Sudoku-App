@@ -249,6 +249,11 @@ button:disabled {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
+
+    /* NEW: Disables the iOS "Save Image" popup and text selection */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .crop-overlay.active { opacity: 1; pointer-events: all; }
@@ -272,7 +277,15 @@ button:disabled {
     background: #000;
 }
 
-.crop-image-wrapper img { max-width: 100%; display: block; }
+.crop-image-wrapper img { 
+    max-width: 100%; 
+    display: block; 
+
+    /* NEW: Prevents dragging the image like a file */
+    -webkit-user-drag: none;
+    pointer-events: none; /* Let cropper.js handle the touches */
+}
+
 .crop-controls { display: flex; justify-content: space-between; gap: 10px; }
 .crop-controls button { flex: 1; }
 .cancel-btn { border-color: #ef4444; color: #ef4444; }
