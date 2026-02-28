@@ -337,3 +337,78 @@ button:disabled {
     color: #fff;
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
 }
+
+/* =========================================
+   7. MOBILE RESPONSIVENESS
+========================================= */
+@media screen and (max-width: 650px) {
+    body {
+        padding-top: 20px;
+        overflow-x: hidden;
+    }
+
+    .glitch {
+        font-size: 24px;
+        letter-spacing: 1px;
+    }
+
+    /* Scale the grid dynamically based on screen width */
+    #sudoku-board {
+        grid-template-columns: repeat(9, 10.5vw);
+        grid-template-rows: repeat(9, 10.5vw);
+        border-width: 2px;
+        gap: 1px;
+    }
+
+    /* Scale the main numbers down */
+    .cell-input {
+        font-size: 22px;
+    }
+
+    /* Tightly pack the tiny red possibility numbers */
+    .cell-possibilities {
+        font-size: 2.2vw;
+        top: 2px;
+        left: 3px;
+        line-height: 1.1;
+    }
+
+    /* Make the controls take up the full screen width */
+    .controls {
+        width: 95vw;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    button, .upload-btn {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    /* Ensure reference panel fits */
+    #reference-panel {
+        width: 95vw;
+        padding: 15px;
+    }
+
+    /* Scale crop overlay down */
+    .crop-container {
+        width: 95%;
+        padding: 15px;
+    }
+}
+
+/* Extra tweak for very small devices (like iPhone SE) */
+@media screen and (max-width: 380px) {
+    .cell-input {
+        font-size: 18px;
+    }
+    .cell-possibilities {
+        font-size: 8px; /* Hard minimum to stay readable */
+        line-height: 1;
+    }
+    button, .upload-btn {
+        font-size: 11px;
+        padding: 8px;
+    }
+}
