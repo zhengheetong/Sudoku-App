@@ -141,13 +141,13 @@ function placeNumber(r, c, num, styleClass) {
 }
 
 // ==========================================
-// 3. LOGIC ALGORITHMS 
+// 3. LOGIC ALGORITHMS (Now accepts dynamic color styles)
 // ==========================================
-function applyNakedSingles() {
+function applyNakedSingles(currentStyle) {
     for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
             if (cells[r][c].value === 0 && cells[r][c].possibilities.length === 1) {
-                placeNumber(r, c, cells[r][c].possibilities[0], 'solved-input');
+                placeNumber(r, c, cells[r][c].possibilities[0], currentStyle);
                 return true;
             }
         }
@@ -155,7 +155,7 @@ function applyNakedSingles() {
     return false;
 }
 
-function applyHiddenSingles() {
+function applyHiddenSingles(currentStyle) {
     for(let num = 1; num <= 9; num++) {
         for(let b = 0; b < 9; b++) {
             let possibleCells = [];
@@ -165,21 +165,21 @@ function applyHiddenSingles() {
                     possibleCells.push({r:sr+i, c:sc+j});
                 }
             }
-            if (possibleCells.length === 1) { placeNumber(possibleCells[0].r, possibleCells[0].c, num, 'solved-input'); return true; }
+            if (possibleCells.length === 1) { placeNumber(possibleCells[0].r, possibleCells[0].c, num, currentStyle); return true; }
         }
         for(let r = 0; r < 9; r++) {
             let possibleCells = [];
             for(let c=0; c<9; c++) {
                 if (cells[r][c].value === 0 && cells[r][c].possibilities.includes(num)) possibleCells.push({r, c});
             }
-            if (possibleCells.length === 1) { placeNumber(possibleCells[0].r, possibleCells[0].c, num, 'solved-input'); return true; }
+            if (possibleCells.length === 1) { placeNumber(possibleCells[0].r, possibleCells[0].c, num, currentStyle); return true; }
         }
         for(let c = 0; c < 9; c++) {
             let possibleCells = [];
             for(let r=0; r<9; r++) {
                 if (cells[r][c].value === 0 && cells[r][c].possibilities.includes(num)) possibleCells.push({r, c});
             }
-            if (possibleCells.length === 1) { placeNumber(possibleCells[0].r, possibleCells[0].c, num, 'solved-input'); return true; }
+            if (possibleCells.length === 1) { placeNumber(possibleCells[0].r, possibleCells[0].c, num, currentStyle); return true; }
         }
     }
     return false;
@@ -250,77 +250,112 @@ function applyPointingPairs() {
 }
 
 // ==========================================
-// 4. VISUAL BACKTRACKING (Estimation)
+// 4. SMART VISUAL SOLVER (Logic + Estimation)
 // ==========================================
-function savePossibilities() { return cells.map(row => row.map(c => [...c.possibilities])); }
-function restorePossibilities(saved) {
-    for(let r=0; r<9; r++) for(let c=0; c<9; c++) cells[r][c].possibilities = [...saved[r][c]];
+
+// Saves the full board state (including colors) to rollback if a guess is wrong
+function saveState() {
+    return cells.map(row => row.map(c => ({
+        value: c.value,
+        possibilities: [...c.possibilities],
+        className: c.input.className
+    })));
+}
+
+function restoreState(saved) {
+    for(let r=0; r<9; r++) {
+        for(let c=0; c<9; c++) {
+            cells[r][c].value = saved[r][c].value;
+            cells[r][c].input.value = saved[r][c].value === 0 ? "" : saved[r][c].value;
+            cells[r][c].input.className = saved[r][c].className;
+            cells[r][c].possibilities = [...saved[r][c].possibilities];
+        }
+    }
     updatePossibilitiesUI();
 }
 
-async function animatedBacktrack() {
+// The core engine: runs logic. If stuck, makes ONE guess, then recurses to run logic again.
+async function doSmartSolve(currentStyle) {
     if (cancelSolve) return false;
+
+    // Phase 1: Run standard human logic rules
+    let changed = true;
+    while (changed && !cancelSolve) {
+        await new Promise(res => setTimeout(res, 200)); 
+        changed = false;
+
+        if (applyNakedSingles(currentStyle)) { changed = true; continue; }
+        if (applyHiddenSingles(currentStyle)) { changed = true; continue; }
+        if (applyNakedPairs()) { updatePossibilitiesUI(); changed = true; continue; }
+        if (applyPointingPairs()) { updatePossibilitiesUI(); changed = true; continue; }
+    }
+
+    if (cancelSolve) return false;
+
+    // Phase 2: Check if solved, or find the best cell to guess
+    let bestR = -1, bestC = -1, minP = 10;
     for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
             if (cells[r][c].value === 0) {
-                let poss = [...cells[r][c].possibilities]; 
-                if (poss.length === 0) return false; 
-
-                for (let num of poss) {
-                    let saved = savePossibilities();
-                    placeNumber(r, c, num, 'guess-input'); 
-                    await new Promise(res => setTimeout(res, 50));
-                    
-                    if (await animatedBacktrack()) return true;
-                    
-                    cells[r][c].value = 0;
-                    cells[r][c].input.value = "";
-                    cells[r][c].input.className = 'cell-input user-input';
-                    restorePossibilities(saved);
-                    await new Promise(res => setTimeout(res, 20));
+                let len = cells[r][c].possibilities.length;
+                if (len === 0) return false; // Dead End! The guess was wrong.
+                
+                if (len < minP) {
+                    minP = len;
+                    bestR = r;
+                    bestC = c;
                 }
-                return false;
             }
         }
     }
-    return true;
+
+    if (bestR === -1) return true; // Solved!
+
+    // Phase 3: Estimation
+    let poss = [...cells[bestR][bestC].possibilities]; 
+    for (let num of poss) {
+        let savedState = saveState(); 
+        
+        // Place the guess in Purple
+        placeNumber(bestR, bestC, num, 'guess-input'); 
+        await new Promise(res => setTimeout(res, 50));
+        
+        // Call the logic loop again, passing 'guess-input'. 
+        // Any logic rules triggered by this guess will now be colored purple!
+        if (await doSmartSolve('guess-input')) {
+            return true;
+        }
+        
+        // If we get here, the logic hit a dead end. Rollback and try the next possibility.
+        restoreState(savedState);
+        await new Promise(res => setTimeout(res, 20));
+    }
+    
+    return false;
 }
 
 // ==========================================
-// 5. MAIN SOLVERS
+// 5. MAIN SOLVE TRIGGERS
 // ==========================================
 async function visualSolve() {
     if (!isLocked) lockGrid();
     cancelSolve = false;
     initPossibilities();
 
-    let solving = true;
-    while (solving && !cancelSolve) {
-        await new Promise(res => setTimeout(res, 200)); 
-
-        if (applyNakedSingles()) continue;
-        if (applyHiddenSingles()) continue;
-        if (applyNakedPairs()) { updatePossibilitiesUI(); continue; }
-        if (applyPointingPairs()) { updatePossibilitiesUI(); continue; }
-
-        let hasEmpty = cells.flat().some(c => c.value === 0);
-        if (!hasEmpty) break;
-
-        const success = await animatedBacktrack();
-        if (!success && !cancelSolve) alert("System Error: No valid solution found.");
-        break;
-    }
+    // Start the solve with standard blue text ('solved-input')
+    const success = await doSmartSolve('solved-input');
+    if (!success && !cancelSolve) alert("System Error: No valid solution found.");
+    
     if (!cancelSolve) updatePossibilitiesUI(); 
 }
 
-// UPDATED: Fast solve now cascades the answers from top-left to bottom-right!
+// Fast solve cascades the answers from top-left to bottom-right instantly
 async function fastSolve() {
     if (!isLocked) lockGrid();
-    cancelSolve = true; // Tell visual solve to stop if it's running
+    cancelSolve = true; 
     
-    // Give visual solve a tiny fraction of a second to exit its loops
     await new Promise(res => setTimeout(res, 50)); 
-    cancelSolve = false; // Reset so our cascade can run
+    cancelSolve = false; 
 
     let grid = [];
     for (let r = 0; r < 9; r++) {
@@ -354,16 +389,13 @@ async function fastSolve() {
         return true;
     }
 
-    // Solve instantly in the background array...
     if (backtrack(grid)) {
-        // ...then animate the results row by row, column by column
         for (let r = 0; r < 9; r++) {
             for (let c = 0; c < 9; c++) {
-                if (cancelSolve) return; // Allow user to interrupt the animation by pressing Reset
+                if (cancelSolve) return; 
                 
                 if (cells[r][c].value === 0) {
                     placeNumber(r, c, grid[r][c], 'solved-input');
-                    // 30ms delay makes it take about 1.5 seconds to fill the whole board
                     await new Promise(res => setTimeout(res, 30)); 
                 }
             }
@@ -518,6 +550,9 @@ document.getElementById('btnLock').addEventListener('click', () => {
 document.getElementById('btnSolve').addEventListener('click', visualSolve);
 document.getElementById('btnFastSolve').addEventListener('click', fastSolve);
 
+// Prevent context menu (Save Image popup) during mobile cropping
+document.getElementById('cropOverlay').addEventListener('contextmenu', event => event.preventDefault());
+
 createGrid();
 
 // ==========================================
@@ -566,6 +601,3 @@ window.addEventListener('resize', () => {
     matrixCanvas.width = window.innerWidth;
     matrixCanvas.height = window.innerHeight;
 });
-
-// Prevent context menu (Save Image popup) during mobile cropping
-document.getElementById('cropOverlay').addEventListener('contextmenu', event => event.preventDefault());
