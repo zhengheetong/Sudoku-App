@@ -11,7 +11,6 @@
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     
     <link rel="stylesheet" href="style.css">
@@ -27,10 +26,36 @@
     <div class="main-layout">
         <div id="sudoku-board"></div>
         
-        <div id="reference-panel" style="display: none;">
-            <h3 class="ref-title">SCAN REFERENCE</h3>
-            <img id="reference-image" src="" alt="Reference Image">
-            <button id="btnCloseRef" class="close-ref-btn">Close Panel</button>
+        <div id="side-panel-wrapper" style="display: none; width: 350px;">
+            <div class="side-tabs">
+                <button id="tabBtnReference" class="side-tab-btn active">Scan Reference</button>
+                <button id="tabBtnReplay" class="side-tab-btn">Terminal Replay</button>
+            </div>
+
+            <div class="side-panel-content">
+                <div id="reference-panel" style="display: block; text-align: center;">
+                    <img id="reference-image" src="" alt="Reference Image" style="max-width: 100%; border: 2px solid var(--primary); border-radius: 4px;">
+                </div>
+
+                <div id="terminal-panel" style="display: none; text-align: left; padding: 15px;">
+                    
+                    <div class="crt-monitor">
+                        <div class="screen-glare"></div>
+                        <div id="step-message" class="step-message">&gt;_ SYSTEM READY</div>
+                    </div>
+                    
+                    <div class="step-controls">
+                        <button id="btnPrevStep" disabled>&lt; Prev</button>
+                        <button id="btnPlayPause" disabled>Auto-Play</button>
+                        <button id="btnNextStep" disabled>Next &gt;</button>
+                    </div>
+
+                    <div class="slider-container" style="margin-top: 15px;">
+                        <input type="range" id="stepSlider" min="0" max="0" value="0" disabled>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
@@ -41,7 +66,6 @@
         <button id="btnLock">Lock</button>
         <button id="btnSolve">Solve (Visualize)</button>
         <button id="btnFastSolve">Fast Solve</button>
-        
         <label for="imageUpload" class="upload-btn" id="uploadLabel">
             Scan Image (Auto-Fill)
         </label>

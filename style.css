@@ -17,22 +17,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: transparent; /* Changed so Matrix rain shows through */
+    background-color: transparent; 
     color: var(--text-main);
     margin: 0;
     padding-top: 50px;
     min-height: 100vh;
 }
 
-/* Matrix Background Canvas */
 #matrix-bg {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1; /* Puts it behind everything */
-    pointer-events: none; /* Stops it from blocking button clicks */
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -1; 
+    pointer-events: none; 
 }
 
 /* =========================================
@@ -45,57 +41,35 @@ body {
     gap: 1px;
     background-color: var(--accent);
     border: 3px solid var(--accent);
-    box-shadow: 0 0 30px rgba(20, 184, 166, 0.5); /* Glow enhanced against dark background */
+    box-shadow: 0 0 30px rgba(20, 184, 166, 0.5); 
     border-radius: 4px;
     overflow: hidden;
-    position: relative; /* Keep it above the canvas */
+    position: relative; 
 }
 
 .cell-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
 }
 
 .cell-input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    text-align: center;
-    font-size: 32px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    color: var(--text-main);
-    z-index: 2;
+    width: 100%; height: 100%;
+    background: transparent; border: none; outline: none;
+    text-align: center; font-size: 32px; font-weight: 600;
+    color: var(--text-main); z-index: 2; font-family: 'Inter', sans-serif;
 }
 
 .cell-possibilities {
-    position: absolute;
-    top: 4px;
-    left: 6px;
-    font-size: 11px;
-    line-height: 1.15;
-    color: #ef4444; 
-    white-space: pre;
-    z-index: 1;
-    font-family: monospace;
-    pointer-events: none;
+    position: absolute; top: 4px; left: 6px;
+    font-size: 11px; line-height: 1.15; color: #ef4444; 
+    white-space: pre; z-index: 1; font-family: monospace; pointer-events: none;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
-}
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-.bg-dark1 { background-color: rgba(15, 23, 42, 0.95); } /* Slightly transparent to let rain peek through barely */
+.bg-dark1 { background-color: rgba(15, 23, 42, 0.95); } 
 .bg-dark2 { background-color: rgba(30, 41, 59, 0.95); }
-
 .user-input { color: var(--text-main); }
 .solved-input { color: var(--accent); font-style: italic; text-shadow: 0 0 8px rgba(20, 184, 166, 0.5); }
 .guess-input { color: #a855f7; font-style: italic; text-shadow: 0 0 8px rgba(168, 85, 247, 0.5); }
@@ -104,67 +78,36 @@ input[type=number]::-webkit-outer-spin-button {
    3. CONTROLS & BUTTONS
 ========================================= */
 .controls {
-    margin-top: 30px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    width: 450px;
-    position: relative;
+    margin-top: 30px; display: grid;
+    grid-template-columns: 1fr 1fr; gap: 15px; width: 450px; position: relative;
 }
 
 button {
-    background: rgba(15, 23, 42, 0.8); /* Added dark background so buttons stand out over rain */
-    color: var(--primary);
-    border: 1px solid var(--primary);
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
-    backdrop-filter: blur(4px);
+    background: rgba(15, 23, 42, 0.8); color: var(--primary);
+    border: 1px solid var(--primary); padding: 12px 20px;
+    border-radius: 8px; font-size: 14px; font-weight: 700;
+    cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+    transition: all 0.3s ease; backdrop-filter: blur(4px); font-family: 'Inter', sans-serif;
 }
 
 button:hover:not(:disabled) {
-    background: var(--gradient);
-    color: #fff;
-    border-color: transparent;
-    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4);
-    transform: translateY(-2px);
+    background: var(--gradient); color: #fff; border-color: transparent;
+    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4); transform: translateY(-2px);
 }
 
 button:disabled {
-    border-color: var(--border-color);
-    color: var(--text-muted);
-    cursor: not-allowed;
-    background: rgba(15, 23, 42, 0.5);
+    border-color: var(--border-color); color: var(--text-muted);
+    cursor: not-allowed; background: rgba(15, 23, 42, 0.5);
 }
 
 .upload-btn {
-    grid-column: span 2;
-    background: rgba(15, 23, 42, 0.8);
-    color: var(--accent);
-    border: 1px dashed var(--accent);
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: center;
-    transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
-    backdrop-filter: blur(4px);
+    grid-column: span 2; background: rgba(15, 23, 42, 0.8);
+    color: var(--accent); border: 1px dashed var(--accent);
+    padding: 12px 20px; border-radius: 8px; font-size: 14px;
+    font-weight: 700; cursor: pointer; text-transform: uppercase;
+    letter-spacing: 1px; text-align: center; transition: all 0.3s ease; backdrop-filter: blur(4px);
 }
-
-.upload-btn:hover {
-    background: rgba(20, 184, 166, 0.2);
-    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.2);
-}
+.upload-btn:hover { background: rgba(20, 184, 166, 0.2); box-shadow: 0 4px 15px rgba(20, 184, 166, 0.2); }
 
 /* =========================================
    4. CYBERPUNK GLITCH EFFECT 
@@ -172,29 +115,18 @@ button:disabled {
 .title-container { margin-bottom: 30px; position: relative; }
 .glitch-wrapper { text-align: center; }
 .glitch {
-    position: relative;
-    font-size: 32px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Keeps text readable over rain */
+    position: relative; font-size: 32px; font-weight: 700; color: #fff;
+    letter-spacing: 2px; text-shadow: 0 0 10px rgba(0, 0, 0, 0.8); 
 }
 .glitch::before, .glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: transparent; /* Removed solid background */
+    content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; 
 }
 .glitch:hover::before {
-    left: 2px;
-    text-shadow: -2px 0 #ff00c1;
-    clip: rect(44px, 450px, 56px, 0);
+    left: 2px; text-shadow: -2px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
     animation: glitch-anim 5s infinite linear alternate-reverse;
 }
 .glitch:hover::after {
-    left: -2px;
-    text-shadow: -2px 0 #00fff9;
-    clip: rect(44px, 450px, 56px, 0);
+    left: -2px; text-shadow: -2px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
     animation: glitch-anim2 5s infinite linear alternate-reverse;
 }
 @keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 20px, 0); } 100% { clip: rect(80px, 9999px, 90px, 0); } }
@@ -204,224 +136,210 @@ button:disabled {
    5. OVERLAYS (Crop & Loading)
 ========================================= */
 .loading-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.9); display: flex; flex-direction: column;
+    justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
 }
-
 .loading-overlay.active { opacity: 1; pointer-events: all; }
-
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid var(--border-color);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+    width: 50px; height: 50px; border: 4px solid var(--border-color);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 1s linear infinite; margin-bottom: 20px;
 }
-
 @keyframes spin { to { transform: rotate(360deg); } }
-
-#loadingText {
-    color: var(--accent);
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
+#loadingText { color: var(--accent); font-family: monospace; font-weight: bold; letter-spacing: 2px; }
 
 .crop-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.95);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-
-    /* NEW: Disables the iOS "Save Image" popup and text selection */
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.95); display: flex; justify-content: center;
+    align-items: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
 }
-
 .crop-overlay.active { opacity: 1; pointer-events: all; }
-
 .crop-container {
-    background: var(--card-bg);
-    border: 2px solid var(--accent);
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 0 20px rgba(20, 184, 166, 0.4);
-    text-align: center;
+    background: var(--card-bg); border: 2px solid var(--accent); padding: 20px;
+    border-radius: 8px; width: 90%; max-width: 500px; box-shadow: 0 0 20px rgba(20, 184, 166, 0.4); text-align: center;
 }
-
-.crop-image-wrapper {
-    width: 100%;
-    max-height: 60vh;
-    overflow: hidden;
-    margin-bottom: 20px;
-    background: #000;
-}
-
-.crop-image-wrapper img { 
-    max-width: 100%; 
-    display: block; 
-
-    /* NEW: Prevents dragging the image like a file */
-    -webkit-user-drag: none;
-    pointer-events: none; /* Let cropper.js handle the touches */
-}
-
+.crop-image-wrapper { width: 100%; max-height: 60vh; overflow: hidden; margin-bottom: 20px; background: #000; }
+.crop-image-wrapper img { max-width: 100%; display: block; -webkit-user-drag: none; pointer-events: none; }
 .crop-controls { display: flex; justify-content: space-between; gap: 10px; }
 .crop-controls button { flex: 1; }
 .cancel-btn { border-color: #ef4444; color: #ef4444; }
 .cancel-btn:hover:not(:disabled) { background: #ef4444; color: #fff; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); }
 
 /* =========================================
-   6. MAIN LAYOUT & REFERENCE PANEL
+   6. MAIN LAYOUT & SIDE TABS
 ========================================= */
 .main-layout {
-    display: flex;
-    flex-direction: row;
-    gap: 30px;
-    align-items: flex-start;
-    justify-content: center;
-    width: 100%;
-    max-width: 1200px;
+    display: flex; flex-direction: row; gap: 30px;
+    align-items: flex-start; justify-content: center; width: 100%; max-width: 1200px;
 }
+@media (max-width: 1100px) { .main-layout { flex-direction: column; align-items: center; } }
 
-/* Stack vertically on smaller screens */
-@media (max-width: 1100px) {
-    .main-layout {
-        flex-direction: column;
-        align-items: center;
-    }
+.side-tabs {
+    display: flex; background: rgba(15, 23, 42, 0.95);
+    border: 2px solid var(--accent); border-bottom: none; border-radius: 8px 8px 0 0; overflow: hidden;
 }
-
-#reference-panel {
-    background: rgba(30, 41, 59, 0.95);
-    border: 2px solid var(--accent);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
-    text-align: center;
-    width: 350px;
-    backdrop-filter: blur(4px);
+.side-tab-btn {
+    flex: 1; background: transparent; color: var(--text-muted);
+    border: none; padding: 12px; font-family: monospace; font-size: 14px;
+    cursor: pointer; transition: all 0.2s ease;
 }
-
-.ref-title {
-    color: var(--accent);
-    font-family: monospace;
-    letter-spacing: 2px;
-    margin-top: 0;
-    margin-bottom: 15px;
+.side-tab-btn:hover { background: rgba(20, 184, 166, 0.1); color: var(--accent); }
+.side-tab-btn.active {
+    background: rgba(30, 41, 59, 0.95); color: var(--accent);
+    font-weight: bold; border-bottom: 2px solid var(--accent);
 }
-
-#reference-image {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid var(--border-color);
-    margin-bottom: 15px;
-    border-radius: 4px;
-}
-
-.close-ref-btn {
-    width: 100%;
-    border-color: #ef4444;
-    color: #ef4444;
-}
-
-.close-ref-btn:hover {
-    background: #ef4444;
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+.side-panel-content {
+    background: rgba(30, 41, 59, 0.95); border: 2px solid var(--accent);
+    border-radius: 0 0 8px 8px; padding: 20px; box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+    min-height: 250px; backdrop-filter: blur(4px);
 }
 
 /* =========================================
    7. MOBILE RESPONSIVENESS
 ========================================= */
 @media screen and (max-width: 650px) {
-    body {
-        padding-top: 20px;
-        overflow-x: hidden;
-    }
-
-    .glitch {
-        font-size: 24px;
-        letter-spacing: 1px;
-    }
-
-    /* Scale the grid dynamically based on screen width */
-    #sudoku-board {
-        grid-template-columns: repeat(9, 10.5vw);
-        grid-template-rows: repeat(9, 10.5vw);
-        border-width: 2px;
-        gap: 1px;
-    }
-
-    /* Scale the main numbers down */
-    .cell-input {
-        font-size: 22px;
-    }
-
-    /* Tightly pack the tiny red possibility numbers */
-    .cell-possibilities {
-        font-size: 2.2vw;
-        top: 2px;
-        left: 3px;
-        line-height: 1.1;
-    }
-
-    /* Make the controls take up the full screen width */
-    .controls {
-        width: 95vw;
-        gap: 10px;
-        margin-top: 20px;
-    }
-
-    button, .upload-btn {
-        padding: 10px;
-        font-size: 12px;
-    }
-
-    /* Ensure reference panel fits */
-    #reference-panel {
-        width: 95vw;
-        padding: 15px;
-    }
-
-    /* Scale crop overlay down */
-    .crop-container {
-        width: 95%;
-        padding: 15px;
-    }
+    body { padding-top: 20px; overflow-x: hidden; }
+    .glitch { font-size: 24px; letter-spacing: 1px; }
+    #sudoku-board { grid-template-columns: repeat(9, 10.5vw); grid-template-rows: repeat(9, 10.5vw); border-width: 2px; gap: 1px; }
+    .cell-input { font-size: 22px; }
+    .cell-possibilities { font-size: 2.2vw; top: 2px; left: 3px; line-height: 1.1; }
+    .controls { width: 95vw; gap: 10px; margin-top: 20px; }
+    button, .upload-btn { padding: 10px; font-size: 12px; }
+    #side-panel-wrapper { width: 95vw !important; }
+    .crop-container { width: 95%; padding: 15px; }
+}
+@media screen and (max-width: 380px) {
+    .cell-input { font-size: 18px; }
+    .cell-possibilities { font-size: 8px; line-height: 1; }
+    button, .upload-btn { font-size: 11px; padding: 8px; }
 }
 
-/* Extra tweak for very small devices (like iPhone SE) */
-@media screen and (max-width: 380px) {
-    .cell-input {
-        font-size: 18px;
-    }
-    .cell-possibilities {
-        font-size: 8px; /* Hard minimum to stay readable */
-        line-height: 1;
-    }
-    button, .upload-btn {
-        font-size: 11px;
-        padding: 8px;
-    }
+/* =========================================
+   8. TERMINAL REPLAY SYSTEM (CRT MONITOR)
+========================================= */
+
+/* The thick outer bezel of the monitor */
+.crt-monitor {
+    position: relative;
+    background-color: #020617; /* Deep black screen */
+    border: 4px solid #334155; /* Chunky plastic frame */
+    border-radius: 8px;
+    height: 140px; /* Fixed height for the screen */
+    margin-bottom: 15px; /* Spacing above the buttons */
+    overflow: hidden;
+    box-shadow: 
+        inset 0 0 15px rgba(0,0,0,0.9), /* Deep inner shadow */
+        0 0 15px rgba(20, 184, 166, 0.2); /* Outer neon glow */
+}
+
+/* Fake glass reflection */
+.screen-glare {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 50%);
+    pointer-events: none; /* Lets you click/scroll through the glare */
+    z-index: 2;
+}
+
+/* The actual text inside the monitor */
+.step-message {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--accent);
+    font-size: 13px;
+    padding: 15px;
+    height: 100%;
+    overflow-y: auto; /* Adds a scrollbar if the text gets too long */
+    line-height: 1.6;
+    text-shadow: 0 0 5px rgba(20, 184, 166, 0.6); /* Glowing text effect */
+    
+    /* Subtle horizontal CRT scanlines */
+    background: linear-gradient(rgba(20, 184, 166, 0.03) 50%, rgba(0, 0, 0, 0.2) 50%);
+    background-size: 100% 4px;
+    
+    /* Reset old styles */
+    border-bottom: none; 
+    margin-bottom: 0;
+    display: block;
+}
+
+/* Custom Cyberpunk Scrollbar for the monitor */
+.step-message::-webkit-scrollbar { width: 6px; }
+.step-message::-webkit-scrollbar-track { background: #020617; }
+.step-message::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* The buttons below the monitor */
+.step-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.step-controls button {
+    flex: 1;
+    padding: 10px 5px;
+    font-size: 12px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--primary);
+    color: var(--text-main);
+}
+
+.step-controls button:hover:not(:disabled) {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+/* =========================================
+   9. TIMELINE SLIDER (SCRUBBER)
+========================================= */
+#stepSlider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #020617;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    outline: none;
+}
+
+/* The draggable dot (Webkit/Chrome) */
+#stepSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(20, 184, 166, 0.8);
+    transition: transform 0.1s;
+}
+
+#stepSlider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* The draggable dot (Firefox) */
+#stepSlider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(20, 184, 166, 0.8);
+    border: none;
+}
+
+/* Disabled state */
+#stepSlider:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#stepSlider:disabled::-webkit-slider-thumb {
+    background: var(--text-muted);
+    box-shadow: none;
+    cursor: not-allowed;
 }
