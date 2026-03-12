@@ -30,7 +30,7 @@ The engine calculates and displays **possibilities** (the small red numbers), lo
 
 ### 1. Naked Singles
 The simplest deduction. If a cell has **ONLY ONE** potential candidate remaining in its possibility set, it must be that number.
-```text
+~~~text
 +-----------------+
 | Possibilities:  |
 | [ 5, 7, 9 ]     | <- Multiple candidates. Unsolved.
@@ -38,11 +38,11 @@ The simplest deduction. If a cell has **ONLY ONE** potential candidate remaining
 | Possibilities:  |
 | [ 4 ]           | <- NAKED SINGLE! This cell must be 4.
 +-----------------+
-```
+~~~
 
 ### 2. Hidden Singles
 A number must go somewhere! This occurs when a specific number is the *only* candidate for its value within a specific row, column, or 3x3 block, even if that cell contains other candidates.
-```text
+~~~text
 Example: Looking for where '7' can go in this 3x3 block:
 +-----------+-----------+-----------+
 | [ 1,2,3 ] | [ 1,5 ]   | [ 2,5 ]   |
@@ -52,11 +52,11 @@ Example: Looking for where '7' can go in this 3x3 block:
 | [ 2,3,4 ] | [ 1,2,4 ] | [ 3,4 ]   |
 +-----------+-----------+-----------+
 Action: The center cell automatically becomes 7.
-```
+~~~
 
 ### 3. Naked Pairs
 A powerful elimination strategy. When two cells within the same group (row, column, or block) contain the **EXACT SAME TWO** candidates, those two numbers can be deleted from all other potential sets in that group.
-```text
+~~~text
 Example Row Possibilities:
 [ 2,8 ] | [ 2,8 ] | [ 1,2,5,8 ] | [ 5,7,8 ]
   ^         ^
@@ -64,11 +64,11 @@ Example Row Possibilities:
 
 Action: Erase '2' and '8' from the rest of the row.
 [ 2,8 ] | [ 2,8 ] | [ 1, 5 ]    | [ 5, 7 ]
-```
+~~~
 
 ### 4. Pointing Pairs / Intersections
 When a number's potential candidates are confined to a single row or column *only within a 3x3 block*, they "point" outward. All other candidates of that number can be safely eliminated from the rest of that entire row/column.
-```text
+~~~text
 Example Block Possibilities for the number '3':
 +---------+---------+---------+       +---------+---------+
 | [ 3,9 ] | [ 3,8 ] | [ 1,2 ] |   ->  | [ 1,3 ] | [ 3,5 ] | (Rest of the Row)
@@ -81,19 +81,38 @@ Example Block Possibilities for the number '3':
 
 Action: Erase '3' from the rest of that row outside the block.
 Result for the rest of the row ->     | [ 1 ]   | [ 5 ]   |
-```
+~~~
 
-#### 💡 Fallback Strategy: Visual Backtracking (Estimation)
-If the logical rules run out of deductions, the system safely falls back to making an educated guess. It saves the board state, makes *one guess*, and logs it to the terminal. If the guess leads to a dead-end, the system rolls back time, restores the previous state, and tries the next possibility.
+### 💡 Fallback Strategy: Visual Backtracking (Estimation)
+If the logical rules run out of deductions, the system safely falls back to making an educated guess. It saves the exact state of the board, finds the cell with the fewest possibilities (usually a 50/50 chance), and branches the timeline.
+
+~~~text
+Situation: Logical deductions are exhausted.
+Smallest remaining cell has two candidates (a 50/50 guess).
+
++-----------------+
+| Possibilities:  |
+| [ 4, 9 ]        | <- The AI splits the timeline here.
++-----------------+
+
+ Timeline A: Guess '4'          Timeline B: Guess '9' (If 4 fails)
++-----------------+            +-----------------+
+| Placed: 4       |            | Placed: 9       |
++-----------------+            +-----------------+
+        |                              |
+        v                              v
+❌ Error: Conflict!            ✅ Solves the rest of the board!
+(Rolls back time)
+~~~
 
 ## 🚀 Getting Started
 
 Because this is a pure client-side web application with no build steps or backend servers required, running it is incredibly simple:
 
 1. Clone the repository:
-   ```bash
+   ~~~bash
    git clone https://github.com/zhengheetong/Sudoku-App.git
-   ```
+   ~~~
 2. Navigate to the project folder.
 3. Double-click on `index.html` to open it in your default web browser.
 
