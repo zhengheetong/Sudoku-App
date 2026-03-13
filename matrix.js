@@ -1,4 +1,19 @@
-// matrix.js - Handles the Cyberpunk background animation
+// 1. INJECT THE CSS STYLES DIRECTLY FROM JAVASCRIPT
+const matrixStyles = document.createElement('style');
+matrixStyles.innerHTML = `
+    #matrix-bg {
+        position: fixed;
+        top: 0; 
+        left: 0; 
+        width: 100vw; 
+        height: 100vh;
+        z-index: -1; 
+        pointer-events: none; /* Lets you click through the canvas */
+    }
+`;
+document.head.appendChild(matrixStyles); // Adds the CSS to the webpage
+
+// 2. RUN THE MATRIX ANIMATION LOGIC
 const matrixCanvas = document.getElementById('matrix-bg');
 const ctxMatrix = matrixCanvas.getContext('2d');
 matrixCanvas.width = window.innerWidth;
@@ -26,6 +41,7 @@ function drawMatrix() {
     }
 }
 setInterval(drawMatrix, 35);
+
 window.addEventListener('resize', () => {
     matrixCanvas.width = window.innerWidth;
     matrixCanvas.height = window.innerHeight;

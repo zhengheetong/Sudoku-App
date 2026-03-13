@@ -24,13 +24,6 @@ body {
     min-height: 100vh;
 }
 
-#matrix-bg {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: -1; 
-    pointer-events: none; 
-}
-
 /* =========================================
    2. SUDOKU GRID & POSSIBILITIES
 ========================================= */
