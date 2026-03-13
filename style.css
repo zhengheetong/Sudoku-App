@@ -24,12 +24,11 @@ body {
     min-height: 100vh;
 }
 
-#matrix-iframe {
+#matrix-bg {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    border: none;
     z-index: -1; 
-    pointer-events: none; /* Allows you to click through the background */
+    pointer-events: none; 
 }
 
 /* =========================================
