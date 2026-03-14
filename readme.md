@@ -4,7 +4,7 @@ A fully featured, client-side Sudoku Solver built with pure HTML, CSS, and Vanil
 
 🌐 **Live Demo:** [Click Here to Play](https://zhengheetong.github.io/Sudoku-App/)
 
-![Cyberpunk Sudoku Solver Preview](https://via.placeholder.com/800x450.png?text=Add+Screenshot+Here) *(Replace with an actual screenshot or GIF of your app)*
+![Cyberpunk Sudoku Solver Preview](https://via.placeholder.com/800x450.png?text=Add+Screenshot+Here)
 
 ## ✨ Features
 
